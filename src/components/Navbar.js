@@ -1,27 +1,28 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <a className="navbar-brand text-primary" href="https://github.com/cuongw">
+      <Link className="navbar-brand text-primary" to="/">
         React Express JWT
-      </a>
+      </Link>
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav mr-auto">
           <li className="nav-item active">
-            <a className="nav-link" href="/">
+            <Link className="nav-link" to="/">
               Home <span className="sr-only">(current)</span>
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/register">
+            <Link className="nav-link" to="/register">
               Register
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/login">
+            <Link className="nav-link" to="/login">
               Login
-            </a>
+            </Link>
           </li>
         </ul>
       </div>

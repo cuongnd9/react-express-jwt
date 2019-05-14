@@ -51,37 +51,38 @@ module.exports.postLogin = (req, res) => {
 
   const { email, password } = req.body;
 
-  User.findOne({ email }).then(user => {
-    if (!user) {
-      return res.status(404).json({ email: 'User not found' });
-    }
+  User.findOne({ email })
+    .then(user => {
+      if (!user) {
+        return res.status(404).json({ email: 'User not found' });
+      }
 
-    bcrypt
-      .compare(password, user.password)
-      .then(isMatch => {
-        if (!isMatch) {
-          return res.status(400).json({ password: 'Incorrect password' });
-        }
+      bcrypt
+        .compare(password, user.password)
+        .then(isMatch => {
+          if (!isMatch) {
+            return res.status(400).json({ password: 'Incorrect password' });
+          }
 
-        const { id, name, email } = user;
-        const payload = { id, name, email };
-        jwt
-          .sign(payload, process.env.JWT_SECRET, {
-            algorithm: 'RS256',
-            expiresIn: '2h'
-          })
-          .then(token => {
-            res.status(200).json({
-              result: {
-                success: true,
-                token
+          const { id, name, email } = user;
+          const payload = { id, name, email };
+          jwt.sign(
+            payload,
+            process.env.JWT_SECRET,
+            {
+              expiresIn: '2h'
+            },
+            (err, token) => {
+              if (err) {
+                return res.status(400).json({ message: err });
               }
-            });
-          })
-          .catch(err => res.status(400).json({ message: err }));
-      })
-      .catch(err => res.status(400).json({ message: err }));
-  });
+              res.status(200).json({ token });
+            }
+          );
+        })
+        .catch(err => res.status(400).json({ message: err }));
+    })
+    .catch(err => res.status(400).json({ message: err }));
 };
 
 module.exports.getMe = (req, res) => {

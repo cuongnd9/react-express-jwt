@@ -46,21 +46,21 @@ module.exports.postLogin = (req, res) => {
   const { errors, isValid } = validateLoginInput(req.body);
 
   if (!isValid) {
-    return res.status(400).json({ message: errors });
+    return res.status(400).json(errors);
   }
 
   const { email, password } = req.body;
 
   User.findOne({ email }).then(user => {
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ email: 'User not found' });
     }
 
     bcrypt
       .compare(password, user.password)
       .then(isMatch => {
         if (!isMatch) {
-          return res.status(400).json({ message: 'Incorrect password' });
+          return res.status(400).json({ password: 'Incorrect password' });
         }
 
         const { id, name, email } = user;

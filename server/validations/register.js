@@ -45,7 +45,7 @@ const validateRegisterInput = data => {
 
   return {
     errors,
-    isValid: Boolean(errors)
+    isValid: !Object.keys(errors).length
   };
 };
 

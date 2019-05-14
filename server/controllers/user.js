@@ -19,7 +19,7 @@ module.exports.postRegister = (req, res) => {
     .then(user => {
       if (user) {
         return res.status(400).json({
-          message: 'Email already exists'
+          email: 'Email already exists'
         });
       }
 

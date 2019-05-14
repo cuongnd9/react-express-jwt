@@ -64,8 +64,8 @@ module.exports.postLogin = (req, res) => {
             return res.status(400).json({ password: 'Incorrect password' });
           }
 
-          const { id, name, email } = user;
-          const payload = { id, name, email };
+          const { id, name, avatar } = user;
+          const payload = { id, name, avatar };
           jwt.sign(
             payload,
             process.env.JWT_SECRET,

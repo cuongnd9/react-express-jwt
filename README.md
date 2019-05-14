@@ -6,8 +6,8 @@
 
 ```sh
 # Install dependencies
-$ yarn
 $ cd server && yarn
+$ yarn
 # Run app
 $ cd server && yarn start
 $ yarn start

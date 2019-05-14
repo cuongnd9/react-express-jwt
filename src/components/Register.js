@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
@@ -9,6 +9,12 @@ function Register(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  useEffect(() => {
+    if (props.auth.isAuthenticated) {
+      props.history.push('/');
+    }
+  });
 
   const handleChange = e => {
     e.target.name === 'name' && setName(e.target.value);
@@ -69,7 +75,9 @@ function Register(props) {
           className="form-control mt-3"
         />
         {props.errors.confirmPassword && (
-          <div className="badge badge-danger">{props.errors.confirmPassword}</div>
+          <div className="badge badge-danger">
+            {props.errors.confirmPassword}
+          </div>
         )}
         <input
           type="submit"
@@ -89,11 +97,13 @@ Register.propTypes = {
     email: PropTypes.string,
     password: PropTypes.string,
     confirmPassword: PropTypes.string
-  }).isRequired
+  }).isRequired,
+  auth: PropTypes.object
 };
 
 const mapStateToProps = state => ({
-  errors: state.errors
+  errors: state.errors,
+  auth: state.auth
 });
 
 const mapDispatchToProps = (dispatch, props) => ({

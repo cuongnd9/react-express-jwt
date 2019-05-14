@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { loginUser } from '../actions/authentication';
 
 function Login(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    if (props.auth.isAuthenticated) {
+      props.history.push('/');
+    }
+  });
 
   const handleChange = e => {
     e.target.name === 'email' && setEmail(e.target.value);
@@ -15,7 +22,7 @@ function Login(props) {
   const handleSubbmit = e => {
     e.preventDefault();
     const user = { email, password };
-    props.onLoginUser(user);
+    props.onLoginUser(user, props.history);
   };
 
   return (
@@ -60,18 +67,20 @@ Login.propTypes = {
   errors: PropTypes.shape({
     email: PropTypes.string,
     password: PropTypes.string
-  }).isRequired
+  }).isRequired,
+  auth: PropTypes.object
 };
 
 const mapStateToProps = state => ({
-  errors: state.errors
+  errors: state.errors,
+  auth: state.auth
 });
 
 const mapDispatchToProps = (dispatch, props) => ({
-  onLoginUser: user => dispatch(loginUser(user))
+  onLoginUser: (user, history) => dispatch(loginUser(user, history))
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Login);
+)(withRouter(Login));
